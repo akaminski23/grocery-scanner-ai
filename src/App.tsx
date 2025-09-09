@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import './App.css';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { SplashCursor } from './components/ui/splash-cursor'; // Import SplashCursor
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
 
 // Get the API key from the .env file
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -38,7 +38,17 @@ function App() {
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const imagePart = await fileToGenerativePart(file);
-      const prompt = `You are an expert nutritionist. Analyze the food item in the image and provide a simple, clear nutritional analysis. Explain if it's a healthy choice and suggest a better alternative if applicable. Respond in Polish.`;
+      // Final, most assertive prompt
+      const prompt = `You are a world-class expert nutritionist. Your task is to analyze the food in the image with maximum confidence.
+
+      **Analysis Rules:**
+      1.  **Identify Foods:** State your primary identification of each food item as a fact. 
+      2.  **Be Decisive and Confident:** You MUST act as an expert. DO NOT use words of uncertainty like 'probably', 'it seems', 'it might be', 'it looks like'. Present your best assessment directly and factually.
+      3.  **No Doubts:** Do not express any uncertainty or mention alternative possibilities. Make your best determination and state it as fact.
+      4.  **Health Score:** Provide a health score from 1 to 10 (1 being very unhealthy, 10 being extremely healthy). Present it as: <span class="health-score">Health Score: X/10</span>. Briefly explain your score.
+      5.  **Suggestions:** Explain if it's a healthy choice and suggest a better alternative if applicable.
+      6.  **Formatting:** Format your entire response using simple paragraphs. Use bold text for titles (e.g., **Analysis:**, **Health Assessment:**, **Suggestions:**).
+      7.  **Language:** Respond in English.`;
 
       const result = await model.generateContent([prompt, imagePart]);
       const response = result.response;
@@ -67,7 +77,6 @@ function App() {
 
   return (
     <div className="App">
-      <SplashCursor /> {/* Add SplashCursor as a background element */}
       <header className="App-header">
         <h1>Grocery Scanner AI</h1>
         <p>Take a picture of a product to get an AI-powered analysis.</p>
@@ -97,7 +106,7 @@ function App() {
           </div>
           <div className="analysis-output">
             <h2>AI Analysis</h2>
-            <pre>{analysisResult}</pre>
+            <ReactMarkdown>{analysisResult}</ReactMarkdown>
           </div>
         </div>
       </main>
