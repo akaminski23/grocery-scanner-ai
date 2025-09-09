@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* General Body Styles */
 body {
   margin: 0;
@@ -150,17 +154,4 @@ main {
 
 .analysis-output .ReactMarkdown strong {
   color: #0056b3;
-}
-
-/* Specific style for the health score */
-.analysis-output .health-score {
-  font-size: 1.8em; /* Make it bigger */
-  font-weight: bold;
-  color: #28a745; /* Green color for health */
-  display: inline-block; /* Ensure it respects padding/margin */
-  margin-left: 10px;
-  padding: 5px 10px;
-  border: 2px solid #28a745;
-  border-radius: 8px;
-  background-color: #e6ffe6;
 }
