@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react';
 import './App.css';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw'; // Import rehypeRaw
+
 
 // Get the API key from the .env file
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -106,7 +108,7 @@ function App() {
           </div>
           <div className="analysis-output">
             <h2>AI Analysis</h2>
-            <ReactMarkdown>{analysisResult}</ReactMarkdown>
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{analysisResult}</ReactMarkdown>
           </div>
         </div>
       </main>
